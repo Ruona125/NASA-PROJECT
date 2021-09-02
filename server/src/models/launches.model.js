@@ -19,7 +19,7 @@ function getAllLaunches() {
   return Array.from(launches.values());
 }
 
-//this is to add new launch
+//this is to add new launch, i.e it will add the new object properties to the launch object
 const addNewLaunch = (launch) => {
   latestFlightNumber++;
   launches.set(
