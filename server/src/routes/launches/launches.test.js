@@ -11,7 +11,30 @@ describe("Test GET /launches", () => {
 }); //this is used to pass a description to our group of test
 
 describe("Test POST /launches", () => {
-  test("It should respond with 200 success", () => {});
+  const completeLaunchData = {
+    mission: "USS Enterprise",
+    rocket: "NCC 1701-D",
+    target: "Kepler-186",
+    launchDate: "January 4, 2028",
+  };
+
+  const launchDataWithoutDate = {
+    mission: "USS Enterprise",
+    rocket: "NCC 1701-D",
+    target: "Kepler-186",
+  };
+  test("It should respond with 201 success", async () => {
+    const response = await request(app)
+      .post("/launches")
+      .send(completeLaunchData)
+      .expect("Content-Type", /json/)
+      .expect(201);
+
+    const requestDate = new Date(completeLaunchData.launchDate).valueOf();
+    const responseDate = new Date(response.body.launchDate).valueOf();
+    expect(responseDate).toBe(requestDate);
+    expect(response.body).toMatchObject(launchDataWithoutDate);
+  });
   test("It shoud catch missing required properties", () => {});
   test("It should catch invalid dates", () => {});
 });
