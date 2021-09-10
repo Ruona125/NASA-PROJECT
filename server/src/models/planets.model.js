@@ -2,7 +2,9 @@ const fs = require("fs");
 const path = require("path");
 const parse = require("csv-parse");
 
-const habitablePlantes = [];
+const planets = require("./planets.mongo");
+
+// const habitablePlantes = [];
 
 const isHabitablePlanet = (planet) => {
   return (
@@ -24,25 +26,45 @@ const loadPlanetsData = () => {
           columns: true,
         })
       )
-      .on("data", (data) => {
+      .on("data", async (data) => {
         if (isHabitablePlanet(data)) {
-          habitablePlantes.push(data);
+          // habitablePlantes.push(data);
+          savePlanets(data);
         }
       }) //this is used to read file
       .on("err", (err) => {
         console.log(err);
         reject(err);
       })
-      .on("end", () => {
-        console.log(`${habitablePlantes.length} habitable plantes found`);
+      .on("end", async () => {
+        const countPlanetsFound = (await getAllPlanets()).length;
+        console.log(`${countPlanetsFound} habitable plantes found`);
         resolve();
       });
   });
 };
 
-function getAllPlanets() {
-  return habitablePlantes;
+async function getAllPlanets() {
+  return await planets.find({});
 }
+
+const savePlanets = async (planet) => {
+  try {
+    await planets.updateOne(
+      {
+        keplerName: planet.kepler_name, //this will look for a document with kepler _name, that matches the document of the keplerName in that .csv file. it will look for a planet that exist
+      },
+      {
+        keplerName: planet.kepler_name, //it will look for a planet that exists, if it doesn't exist, it will add it.
+      },
+      {
+        upsert: true,
+      }
+    ); //it will update the planet
+  } catch (err) {
+    console.error(`could not save planet ${err}`);
+  }
+};
 
 module.exports = {
   loadPlanetsData,

@@ -32,3 +32,6 @@ const launchesSchema = new mongoose.Schema({
   },
   customers: [String],
 });
+
+//connect launchesSchema with the "launches" collection
+module.exports = mongoose.model("Launch", launchesSchema); //the first argument should always be the singular name of the collection of what the model represent
