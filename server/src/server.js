@@ -19,20 +19,27 @@ mongoose.connection.once("open", () => {
 mongoose.connection.on("error", (err) => {
   console.error(err);
 });
+// await mongoose.connect(MONGO_URL, {
+//   useNewUrlParser: true,
+//   // useFindAndModify: false,
+//   // useCreateIndex: true,
+//   useUnifiedTopology: true,
+// });
 
-const startServer = async () => {
-  await mongoose.connect(MONGO_URL, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTypology: true,
-  });
+async function startServer() {
+  // await mongoose.connect(MONGO_URL, {
+  //   useNewUrlParser: true,
+  //   // useFindAndModify: false,
+  //   // useCreateIndex: true,
+  //   useUnifiedTopology: true,
+  // });
+  await mongoose.connect(MONGO_URL);
   await loadPlanetsData();
 
   server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
-};
+}
 
 startServer();
 
