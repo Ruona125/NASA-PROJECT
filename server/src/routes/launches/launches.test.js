@@ -44,7 +44,7 @@ describe("Launches API", () => {
     };
 
     test("It should respond with 201 success", () => {
-      const response = request(app)
+      const response = await request(app)
         .post("/v1/launches")
         .send(completeLaunchData)
         .expect("Content-Type", /json/)
