@@ -7,7 +7,7 @@ const DEFAULT_FLIGHT_NUMBER = 100;
 const SPACEX_API_URL = "https://api.spacexdata.com/v4/launches/query";
 
 async function loadLaunchData() {
-  console.log("Downloading launch data....");
+  // console.log("Downloading launch data....");
   const response = await axios.post(SPACEX_API_URL, {
     query: {},
     options: {
@@ -50,7 +50,7 @@ async function loadLaunchData() {
       success: launchDoc["success"],
       customers,
     };
-    console.log(`${launch.flightNumber} ${launch.mission}`);
+    // console.log(`${launch.flightNumber} ${launch.mission}`);
 
     await saveLaunch(launch);
   }
